@@ -15,7 +15,8 @@
 </a>
 {{ end }}
 {{ $pdf := "" }}
-{{ $resource := $page.Resources.GetMatch (printf "%s.pdf" $page.File.ContentBaseName) }}
+{{/* $resource := $page.Resources.GetMatch (printf "%s.pdf" $page.File.ContentBaseName) */}}
+{{ $resource := $page.Resources.GetMatch ("*.pdf") }}
 {{ with $resource }}
   {{ $pdf = .RelPermalink }}
 {{ else }}

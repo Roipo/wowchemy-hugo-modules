@@ -11,7 +11,7 @@
 {{ if eq $item.Type "event" }}
   {{ $show_authors_only = true }}
 {{ else if eq $item.Type "publication" }}
-  {{ $show_authors_only = true }}
+  {{ $show_authors_only = false }}
 {{ else if eq $item.Type "project" }}
   {{ $show_authors_only = true }}
 {{ end }}
@@ -29,8 +29,18 @@
 {{ end }}
 
 <div class="media stream-item">
-  <div class="media-body">
+  
+  <div class="align-self-start mr-3">
+    {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
+    {{ with $resource }}
+    {{ $image := .Resize "150x" }}
+    <a href="{{$link}}" {{ $target | safeHTMLAttr }}>
+      <img src="{{ $image.RelPermalink }}" alt="{{ $item.Title }}" loading="lazy">
+    </a>
+    {{end}}
+  </div>
 
+  <div class="media-body">
     <div class="section-subheading article-title mb-0 mt-0">
       <a href="{{$link}}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
     </div>
@@ -72,14 +82,5 @@
     </div>
     {{ end }}
 
-  </div>
-  <div class="ml-3">
-    {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
-    {{ with $resource }}
-    {{ $image := .Resize "150x" }}
-    <a href="{{$link}}" {{ $target | safeHTMLAttr }}>
-      <img src="{{ $image.RelPermalink }}" alt="{{ $item.Title }}" loading="lazy">
-    </a>
-    {{end}}
   </div>
 </div>
