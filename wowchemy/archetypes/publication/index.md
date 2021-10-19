@@ -5,7 +5,7 @@ title: "{{ replace .Name "-" " " | title }}"
 authors: []
 date: {{ .Date }}
 doi: ""
-
+project_name: ""
 # Schedule page publish date (NOT publication's date).
 publishDate: {{ .Date }}
 

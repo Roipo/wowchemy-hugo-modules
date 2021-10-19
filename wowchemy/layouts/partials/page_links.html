@@ -16,10 +16,17 @@
 {{ end }}
 {{ $pdf := "" }}
 {{/* $resource := $page.Resources.GetMatch (printf "%s.pdf" $page.File.ContentBaseName) */}}
-{{ $resource := $page.Resources.GetMatch ("*.pdf") }}
+{{/* $resource := $page.Resources.GetMatch ("*.pdf") */}}
+{{$resource := $page.Resources.GetMatch (printf "%s.pdf" $page.File.ContentBaseName)}}
+{{if not $resource}}
+  {{$resource = $page.Resources.GetMatch (printf "%s.pdf" $page.Params.project_name)}}
+{{end}}
+{{if not $resource}}
+  {{$resource = $page.Resources.GetMatch ("*.pdf")}}
+{{end}}
 {{ with $resource }}
   {{ $pdf = .RelPermalink }}
-{{ else }}
+{{ else }}  
   {{ if $page.Params.url_pdf }}
     {{ $pdf = $page.Params.url_pdf | relURL }}
   {{ end }}

@@ -30,8 +30,8 @@
 
 <div class="media stream-item">
   
-  <div class="align-self-start mr-3">
-    {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
+  <div class="align-self-start mr-3 mt-2">
+    {{ $resource := ($item.Resources.ByType "image").GetMatch (printf "{*featured*,*%s*}" $.Params.project_name) }}
     {{ with $resource }}
     {{ $image := .Resize "150x" }}
     <a href="{{$link}}" {{ $target | safeHTMLAttr }}>

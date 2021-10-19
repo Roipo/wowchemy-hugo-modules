@@ -1,4 +1,4 @@
-{{ $is_list := .is_list }}
+{{ $with_publication := .with_publication }}
 {{ $page := .page }}
 
 <div class="article-metadata">
@@ -12,7 +12,7 @@
   {{ end }}
   {{ end }}
 
-  {{ if and (eq $is_list 1) (eq $page.Type "publication") }}
+  {{ if and $with_publication (eq $page.Type "publication") }}
   <span class="pub-publication">
     {{ if $page.Params.publication_short }}
       {{ $page.Params.publication_short | markdownify }}
