@@ -1,3 +1,10 @@
+<script type="text/javascript">
+function getRandomImageName(imgs) {
+  var num = Math.floor( Math.random() * imgs.length);
+  return imgs[num];
+}
+</script>
+
 {{ $ := .root }}
 {{ $page := .page }}
 
@@ -14,7 +21,15 @@
   {{ errorf "Could not find an author page at `%s`. Please check the value of `author` in your About widget and create an associated author page if one does not already exist. See https://wowchemy.com/docs/page-builder/#about " $person_page_path }}
 {{end}}
 {{ $person := $person_page.Params }}
-{{ $avatar := ($person_page.Resources.ByType "image").GetMatch "*avatar*" }}
+{{ $avatar := ($person_page.Resources.ByType "image").Match "*avatar*" }}
+
+{{ $imgs := slice}}
+{{ range $avatar}}
+  {{ $avatar_image := .Fill "300x210 Center" }}
+  {{ $imgs = $imgs | append $avatar_image.RelPermalink }}
+{{end}}
+
+{{ $avatar  := index $avatar 0}}
 {{ $avatar_shape := site.Params.avatar.shape | default "circle" }}
 
 <!-- About widget -->
@@ -22,15 +37,15 @@
   <div class="col-12 col-lg-4">
     <div id="profile">
 
-      {{ if site.Params.avatar.gravatar }}
-      <img class="avatar {{if eq $avatar_shape "square"}}avatar-square{{else}}avatar-circle{{end}}" src="https://s.gravatar.com/avatar/{{ md5 $person.email }}?s=270')" alt="{{$person_page.Title}}">
-      {{ else if $avatar }}
       {{ $avatar_image := $avatar.Fill "300x210 Center" }}
-      <img class="avatar {{if eq $avatar_shape "square"}}avatar-square{{else}}avatar-circle{{end}}"
+      <img id="mypic" class="avatar {{if eq $avatar_shape "square"}}avatar-square{{else}}avatar-circle{{end}}"
            width="{{ $avatar_image.Width }}" height="{{ $avatar_image.Height }}"
            src="{{ $avatar_image.RelPermalink }}" alt="{{$person_page.Title}}">
-      {{ end }}
-
+      <script>
+        const img = document.getElementById("mypic");
+        var src = getRandomImageName({{$imgs}});
+        img.src = src;
+      </script>
       <div class="portrait-title">
         <h2>{{ $person_page.Title }}</h2>
         {{ with $person.role }}<h3>{{ . | markdownify | emojify }}</h3>{{ end }}
